@@ -2,57 +2,78 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>SmartEvent</ion-title>
+        <ion-title>Favoritos</ion-title>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Blank</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-button @click="$router.push('/home')"> HOME </ion-button>
+    <ion-content :fullscreen="true" class="ion-padding">
+      <ion-button @click="$router.push('/home')">HOME</ion-button>
 
-      <div id="container">
-        <strong>SmartEvent</strong>
-        <p>O nosso aplicativo oferece a lista de shows de seus artistas favoritos!</p>
+      <div v-if="favoritos.length === 0" class="mensagem-vazia">
+        Nenhum evento foi favoritado ainda.
       </div>
+
+      <ion-list v-else>
+        <ion-item
+          v-for="evento in favoritos"
+          :key="evento.id"
+          button
+          @click="$router.push(`/eventos/${evento.id}`)"
+
+          
+        >
+          <ion-thumbnail slot="start">
+           <img :src="evento.imagem" :alt="evento.nome" />
+          </ion-thumbnail>
+
+          <ion-label>
+            <h2>{{ evento.nome }}</h2>
+            <p>{{ evento.subtitulo }}</p>
+          </ion-label>
+
+          <ion-icon :icon="star" slot="end"></ion-icon>
+        </ion-item>
+      </ion-list>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { computed } from 'vue'
+import { star } from 'ionicons/icons'
+import { eventos } from '@/data/eventos'
+import {
+  IonContent,
+  IonHeader,
+  IonPage,
+  IonTitle,
+  IonToolbar,
+  IonButton,
+  IonList,
+  IonItem,
+  IonLabel,
+  IonIcon,
+  IonThumbnail
+} from '@ionic/vue'
 
+const favoritos = computed(() => {
+  return eventos.filter((evento) => evento.favorito)
+})
 </script>
 
 <style scoped>
-#container {
+
+img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
+}
+
+.mensagem-vazia {
   text-align: center;
-  
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-}
-
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
-}
-
-#container p {
+  margin-top: 30px;
   font-size: 16px;
-  line-height: 22px;
-  
-  color: #8c8c8c;
-  
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+  color: gray;
 }
 </style>

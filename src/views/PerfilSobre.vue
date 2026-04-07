@@ -2,57 +2,91 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>SmartEvent</ion-title>
+        <ion-title>Perfil / Sobre</ion-title>
       </ion-toolbar>
     </ion-header>
 
-    <ion-content :fullscreen="true">
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Blank</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-button @click="$router.push('/home')"> HOME </ion-button>
+    <ion-content :fullscreen="true" class="ion-padding">
+      <ion-button @click="$router.push('/home')">HOME</ion-button>
 
-      <div id="container">
-        <strong>SmartEvent</strong>
-        <p>O nosso aplicativo oferece a lista de shows de seus artistas favoritos!</p>
+      <div class="perfil-topo">
+        <ion-icon :icon="personCircleOutline" class="icone-perfil"></ion-icon>
+        <h2>Perfil do Usuário</h2>
       </div>
+
+      <p>
+        O SmartEvent é um aplicativo criado para visualizar, consultar e favoritar
+        eventos locais como shows, palestras, esportes e workshops.
+      </p>
+
+      <ion-item>
+        <ion-input
+          label="Seu nome"
+          label-placement="stacked"
+          placeholder="Digite seu nome"
+          v-model="nome"
+        ></ion-input>
+      </ion-item>
+
+      <p class="mensagem">Nome digitado: {{ nome }}</p>
+      <p class="mensagem-secundaria">{{ mensagem }}</p>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { IonContent, IonHeader, IonPage, IonTitle, IonToolbar } from '@ionic/vue';
+import { ref, watch } from 'vue'
+import { personCircleOutline } from 'ionicons/icons'
+import {
+  IonPage,
+  IonHeader,
+  IonToolbar,
+  IonTitle,
+  IonContent,
+  IonButton,
+  IonItem,
+  IonInput,
+  IonIcon
+} from '@ionic/vue'
 
+const nome = ref('')
+const mensagem = ref('Digite seu nome no campo acima.')
+
+watch(nome, (novoValor) => {
+  if (novoValor.trim() === '') {
+    mensagem.value = 'Digite seu nome no campo acima.'
+  } else {
+    mensagem.value = `Olá, ${novoValor}! Seja bem-vinda ao SmartEvent.`
+  }
+})
 </script>
 
 <style scoped>
-#container {
-  text-align: center;
-  
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+
+img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.perfil-topo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 20px 0 10px;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  
-  color: #8c8c8c;
-  
-  margin: 0;
+.icone-perfil {
+  font-size: 60px;
 }
 
-#container a {
-  text-decoration: none;
+.mensagem {
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.mensagem-secundaria {
+  color: gray;
 }
 </style>

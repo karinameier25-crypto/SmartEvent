@@ -2,89 +2,68 @@
   <ion-page>
     <ion-header :translucent="true">
       <ion-toolbar>
-        <ion-title>SmartEvent</ion-title>
+        <ion-title>Lista de Eventos</ion-title>
       </ion-toolbar>
     </ion-header>
 
     <ion-content :fullscreen="true" class="ion-padding">
-      <ion-button @click="$router.push('/home')"> HOME </ion-button>
-      <ion-header collapse="condense">
-        <ion-toolbar>
-          <ion-title size="large">Blank</ion-title>
-        </ion-toolbar>
-      </ion-header>
-      <ion-list>
-        <ion-item button @click="$router.push('/eventos/1')">
-          <ion-label>
-            <h2>BTS WORLD TOUR | ARIRANG</h2>
-            <p>Turnê confirmada</p>
-          </ion-label>
-          <ion-icon :icon="starOutline" slot="end"></ion-icon>
-        </ion-item>
+      <ion-button @click="$router.push('/home')">HOME</ion-button>
 
-        <ion-item button @click="$router.push('/eventos/2')">
-          <ion-label>
-            <h2>ROCK IN RIO</h2>
-            <p>Turnê confirmada</p>
-          </ion-label>
-          <ion-icon :icon="starOutline" slot="end"></ion-icon>
-        </ion-item>
+      <ion-card
+        v-for="evento in eventos"
+        :key="evento.id"
+        class="evento-card"
+        @click="$router.push(`/eventos/${evento.id}`)"
+      >
+        <img :src="evento.imagem" :alt="evento.nome" />
 
-        <ion-item button @click="$router.push('/eventos/3')">
-          <ion-label>
-            <h2>BAD BUNNY</h2>
-            <p>Turnê confirmada</p>
-          </ion-label>
-          <ion-icon :icon="starOutline" slot="end"></ion-icon>
-        </ion-item>
-      </ion-list>
-  
+        <ion-card-header>
+          <ion-card-title>{{ evento.nome }}</ion-card-title>
+          <ion-card-subtitle>{{ evento.subtitulo }}</ion-card-subtitle>
+        </ion-card-header>
+
+        <ion-card-content>
+          {{ evento.descricao }}
+        </ion-card-content>
+      </ion-card>
     </ion-content>
   </ion-page>
 </template>
 
 <script setup lang="ts">
-import { starOutline } from 'ionicons/icons'
+import { eventos } from '@/data/eventos'
 import {
-  IonContent,
-  IonHeader,
   IonPage,
-  IonTitle,
+  IonHeader,
   IonToolbar,
+  IonTitle,
+  IonContent,
   IonButton,
-  IonList,
-  IonItem,
-  IonLabel,
-  IonIcon
+  IonCard,
+  IonCardHeader,
+  IonCardTitle,
+  IonCardSubtitle,
+  IonCardContent
 } from '@ionic/vue'
 </script>
 
 <style scoped>
-#container {
-  text-align: center;
-  
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+
+img {
+  width: 100%;
+  height: 180px;
+  object-fit: cover;
+  display: block;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.evento-card {
+  margin-top: 16px;
+  cursor: pointer;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
-  
-  color: #8c8c8c;
-  
-  margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+.evento-card img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
 }
 </style>
